@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  api1:
+    build:
+      context: .
+      dockerfile: src/Api/Dockerfile
+    container_name: url-shortener-api1
+    ports:
+      - "5001:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+    networks:
+      - url-shortener-network
+
+  api2:
+    build:
+      context: .
+      dockerfile: src/Api/Dockerfile
+    container_name: url-shortener-api2
+    ports:
+      - "5002:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+    networks:
+      - url-shortener-network
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Gateway/Dockerfile
+    container_name: url-shortener-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - api1
+      - api2
+    networks:
+      - url-shortener-network
+
+networks:
+  url-shortener-network:
+    driver: bridge
+
