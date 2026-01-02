@@ -7,10 +7,11 @@ services:
       dockerfile: src/Api/Dockerfile
     container_name: url-shortener-api1
     ports:
-      - "5001:5000"
+      - "5001:5000"   # HTTP
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5000
+      - DOCKER_ENV=true
     networks:
       - url-shortener-network
 
@@ -20,10 +21,11 @@ services:
       dockerfile: src/Api/Dockerfile
     container_name: url-shortener-api2
     ports:
-      - "5002:5000"
+      - "5002:5000"   # HTTP
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5000
+      - DOCKER_ENV=true
     networks:
       - url-shortener-network
 
@@ -33,10 +35,11 @@ services:
       dockerfile: gateway/Gateway/Dockerfile
     container_name: url-shortener-gateway
     ports:
-      - "8080:8080"
+      - "8080:8080"   # HTTP
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
+      - DOCKER_ENV=true
     depends_on:
       - api1
       - api2
@@ -46,4 +49,3 @@ services:
 networks:
   url-shortener-network:
     driver: bridge
-

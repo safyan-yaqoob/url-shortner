@@ -21,7 +21,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-app.UseHttpsRedirection();
+if (!Environment.GetEnvironmentVariable("DOCKER_ENV")?.Equals("true", StringComparison.OrdinalIgnoreCase) == true)
+{
+    app.UseHttpsRedirection();
+}
 
 app.MapControllers();
 
