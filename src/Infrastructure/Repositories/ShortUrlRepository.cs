@@ -17,6 +17,7 @@ public class ShortUrlRepository : IShortUrlRepository
     public async Task<ShortUrl?> GetByShortCodeAsync(string shortCode, CancellationToken cancellationToken = default)
     {
         return await _context.ShortUrls
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ShortCode == shortCode, cancellationToken);
     }
 
@@ -30,6 +31,7 @@ public class ShortUrlRepository : IShortUrlRepository
     public async Task<bool> ExistsAsync(string shortCode, CancellationToken cancellationToken = default)
     {
         return await _context.ShortUrls
+            .AsNoTracking()
             .AnyAsync(x => x.ShortCode == shortCode, cancellationToken);
     }
 }
